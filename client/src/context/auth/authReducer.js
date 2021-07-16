@@ -7,6 +7,8 @@ import {
   LOGIN_FAIL,
   REGISTER_SUCCESS,
   REGISTER_FAIL,
+  SEND_MAIL,
+  RESET_PASSWORD,
 } from "../types";
 
 export default (state, action) => {
@@ -40,6 +42,7 @@ export default (state, action) => {
         user: null,
         error: action.payload,
       };
+
     default:
       return state;
   }

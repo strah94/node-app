@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/auth/authContext";
+import { Link } from "react-router-dom";
 
 const Login = (props) => {
   const authContext = useContext(AuthContext);
@@ -72,6 +73,7 @@ const Login = (props) => {
           className="btn btn-primary btn-block"
         />
       </form>
+      <Link to="/forgotPassword">Forgot password ?</Link>
     </div>
   );
 };

@@ -1,3 +1,5 @@
 {
-  "jwtSecret": "secret"
+  "jwtSecret": "secret",
+  "userGmail": "testserbia994@gmail.com",
+  "passGmail": "Testing123!"
 }

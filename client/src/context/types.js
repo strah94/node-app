@@ -6,3 +6,5 @@ export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const LOGIN_FAIL = "LOGIN_FAIL";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
+export const SEND_MAIL = "SEND_MAIL";
+export const RESET_PASSWORD = "RESET_PASSWORD";

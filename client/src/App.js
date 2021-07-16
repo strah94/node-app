@@ -8,6 +8,8 @@ import Register from "./components/auth/Register";
 import Login from "./components/auth/Login";
 import AuthState from "./context/auth/AuthState";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 
 function App() {
   return (
@@ -21,6 +23,16 @@ function App() {
                 <PrivateRoute exact path="/" component={Home} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
+                <Route
+                  exact
+                  path="/forgotPassword"
+                  component={ForgotPassword}
+                />
+                <Route
+                  exact
+                  path="/resetPassword/:id"
+                  component={ResetPassword}
+                />
               </Switch>
             </div>
           </Fragment>

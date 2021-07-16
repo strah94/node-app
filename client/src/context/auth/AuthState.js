@@ -13,6 +13,8 @@ import {
   LOGIN_FAIL,
   REGISTER_FAIL,
   REGISTER_SUCCESS,
+  SEND_MAIL,
+  RESET_PASSWORD,
 } from "../types";
 
 const AuthState = (props) => {
@@ -93,6 +95,46 @@ const AuthState = (props) => {
     }
   };
 
+  // Send mail
+  const sendMail = async (email) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post("/api/mail", { email }, config);
+      dispatch({
+        type: SEND_MAIL,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Reset password
+  const resetPassword = async (password, id) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post(
+        "/api/resetPassword",
+        { password, id },
+        config
+      );
+      dispatch({
+        type: RESET_PASSWORD,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   //Logout
   const logout = () => {
     dispatch({ type: LOGOUT });
@@ -109,11 +151,14 @@ const AuthState = (props) => {
         loading: state.loading,
         user: state.user,
         error: state.error,
+        passwordReset: state.passwordReset,
         register,
         loadUser,
         login,
         logout,
         clearErrors,
+        sendMail,
+        resetPassword,
       }}
     >
       {props.children}
