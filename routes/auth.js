@@ -35,13 +35,13 @@ router.post(
 
       //Checking email
       if (existingUser.length === 0) {
-        return res.status(400).json({ msg: "Invalid Email" });
+        return res.status(400).json({ msg: "Invalid Credentials" });
       }
 
       //  Checking password
       const isMatch = await bcrypt.compare(password, existingUser[0].password);
       if (!isMatch) {
-        return res.status(400).json({ msg: "Invalid Password" });
+        return res.status(400).json({ msg: "Invalid Credentials" });
       }
 
       const payload = {
