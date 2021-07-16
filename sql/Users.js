@@ -39,4 +39,20 @@ const addUser = (firstName, lastName, email, password) => {
   });
 };
 
-module.exports = { getUserByEmail, addUser };
+const getUserById = (id) => {
+  return new Promise((resolve, reject) => {
+    poolMYSQL.getConnection((err, conn) => {
+      let sql = "SELECT * FROM `users` WHERE `id` = ?";
+      let query = conn.query(sql, [id], (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        conn.release();
+        resolve(result);
+        // console.log(result);
+      });
+    });
+  });
+};
+
+module.exports = { getUserByEmail, addUser, getUserById };

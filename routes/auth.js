@@ -3,8 +3,19 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const auth = require("../middleware/auth");
 const { check, validationResult } = require("express-validator");
-const { getUserByEmail, addUser } = require("../sql/Users");
+const { getUserByEmail, addUser, getUserById } = require("../sql/Users");
+
+router.get("/", auth, async (req, res) => {
+  try {
+    const user = await getUserById(req.user.id);
+    res.json(user[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
 
 router.post(
   "/",
@@ -27,7 +38,7 @@ router.post(
         return res.status(400).json({ msg: "Invalid Email" });
       }
 
-      //  Checking password - bcrypt.compare returns true or false
+      //  Checking password
       const isMatch = await bcrypt.compare(password, existingUser[0].password);
       if (!isMatch) {
         return res.status(400).json({ msg: "Invalid Password" });
