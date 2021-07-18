@@ -8,3 +8,5 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 export const SEND_MAIL = "SEND_MAIL";
 export const RESET_PASSWORD = "RESET_PASSWORD";
+export const GET_ALL_POSTS = "GET_ALL_POSTS";
+export const GET_ALL_COMMENTS = "GET_ALL_COMMENTS";

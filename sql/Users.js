@@ -55,4 +55,20 @@ const getUserById = (id) => {
   });
 };
 
-module.exports = { getUserByEmail, addUser, getUserById };
+const resetPassword = (password, id) => {
+  return new Promise((resolve, reject) => {
+    poolMYSQL.getConnection((err, conn) => {
+      let sql = "UPDATE`users` SET `password` = ? WHERE  `id`=? ";
+      let query = conn.query(sql, [password, id], (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        conn.release();
+        resolve((result = "ok"));
+        // console.log(result);
+      });
+    });
+  });
+};
+
+module.exports = { getUserByEmail, addUser, getUserById, resetPassword };

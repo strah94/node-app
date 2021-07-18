@@ -23,6 +23,8 @@ app.use(cors(corsOptions));
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/mail", require("./routes/mail"));
+app.use("/api/posts", require("./routes/posts"));
+app.use("/api/comments", require("./routes/comments"));
 app.use("/api/resetPassword", require("./routes/resetPassword"));
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

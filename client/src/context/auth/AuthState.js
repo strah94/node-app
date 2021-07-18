@@ -127,6 +127,7 @@ const AuthState = (props) => {
         { password, id },
         config
       );
+      console.log(res.data.msg);
       dispatch({
         type: RESET_PASSWORD,
       });
