@@ -17,9 +17,10 @@ const corsOptions = {
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
+
 app.use(cors(corsOptions));
 
-//Define Routes
+//Routes
 app.use("/api/users", require("./routes/users"));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/mail", require("./routes/mail"));

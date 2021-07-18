@@ -16,4 +16,21 @@ const getAllPosts = () => {
   });
 };
 
-module.exports = { getAllPosts };
+const addPost = (title, postText, userID) => {
+  return new Promise((resolve, reject) => {
+    poolMYSQL.getConnection((err, conn) => {
+      let sql =
+        "INSERT INTO  `posts` (`post_title`,`post_text`,`owner_id`,`edited`) VALUES(?,?,?,0)";
+      let query = conn.query(sql, [title, postText, userID], (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        conn.release();
+        resolve((result = "ok"));
+        // console.log(result);
+      });
+    });
+  });
+};
+
+module.exports = { getAllPosts, addPost };
