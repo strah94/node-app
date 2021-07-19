@@ -51,8 +51,6 @@ router.post(
       let result = await getUserByEmail(email);
       let userId = await result[0].id;
 
-      console.log(userId);
-
       // JWT;
       const payload = {
         user: {

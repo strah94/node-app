@@ -59,4 +59,30 @@ const deletePermission = (userID, permissionsUserID) => {
   });
 };
 
-module.exports = { getAllPermissions, addPermission, deletePermission };
+const findPermission = (userID, permissionsUserID) => {
+  return new Promise((resolve, reject) => {
+    poolMYSQL.getConnection((err, conn) => {
+      let sql =
+        "SELECT * FROM  `permissions` WHERE `user_id`= ? AND write_user_id= ?";
+      let query = conn.query(
+        sql,
+        [userID, permissionsUserID],
+        (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          conn.release();
+          resolve(result);
+          // console.log(result);
+        }
+      );
+    });
+  });
+};
+
+module.exports = {
+  getAllPermissions,
+  addPermission,
+  deletePermission,
+  findPermission,
+};

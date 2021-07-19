@@ -108,8 +108,10 @@ const AuthState = (props) => {
       dispatch({
         type: SEND_MAIL,
       });
-    } catch (err) {
-      console.log(err);
+
+      alert("Mail has been sent");
+    } catch (error) {
+      alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 

@@ -3,7 +3,8 @@ const poolMYSQL = require("../config/db");
 const getAllComments = () => {
   return new Promise((resolve, reject) => {
     poolMYSQL.getConnection((err, conn) => {
-      let sql = "SELECT * FROM `comments`";
+      let sql =
+        "SELECT * FROM `comments` JOIN `users` ON `comments`.`owner_id`=`users`.`id`";
       let query = conn.query(sql, (err, result) => {
         if (err) {
           reject(err);

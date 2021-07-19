@@ -9,6 +9,8 @@ const PermissionsModal = () => {
 
   const [allUsers, setAllUsers] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [updateValues, setUpdateValues] = useState(false);
+  const [hiddenUsers, setHiddenUsers] = useState([]);
 
   const { user } = authContext;
   const {
@@ -18,6 +20,7 @@ const PermissionsModal = () => {
     hidePermissionsModal,
     addPermission,
     deletePermission,
+    hideUser,
   } = postsContext;
 
   useEffect(async () => {
@@ -27,26 +30,25 @@ const PermissionsModal = () => {
 
       const res = await axios.get("/api/users", {});
       const users = await res.data;
-      setAllUsers(users);
+
+      let userOptions = users.filter((element) => {
+        return element.id !== user.id;
+      });
+
+      setAllUsers(userOptions);
     }
   }, [user]);
 
-  useEffect(() => {
-    user && getAllPermissions(user.id);
-  }, []);
-
   const handleOnChange = (e) => {
     addPermission(user.id, e.target.value);
-    getAllPermissions(user.id);
   };
 
-  const handleOnHide = (e) => {
-    console.log("handle on hide");
+  const handleOnHide = async (e) => {
+    hideUser(e.target.value);
   };
 
   const handleOnClick = (e) => {
-    deletePermission(e.target.value);
-    getAllPermissions(user.id);
+    deletePermission(user.id, e.target.value);
   };
 
   return (

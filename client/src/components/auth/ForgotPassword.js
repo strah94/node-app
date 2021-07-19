@@ -20,7 +20,7 @@ const ForgotPassword = () => {
   };
   return (
     <div className="form-container">
-      {!mailSent ? (
+      {!mailSent && (
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label htmlFor="email"> Enter Email Address</label>
@@ -39,8 +39,6 @@ const ForgotPassword = () => {
             className="btn btn-primary btn-block"
           />
         </form>
-      ) : (
-        <h1>Mail has been sent</h1>
       )}
     </div>
   );

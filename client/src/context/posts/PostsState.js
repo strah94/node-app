@@ -37,7 +37,7 @@ const PostsState = (props) => {
 
       dispatch({ type: GET_ALL_POSTS, payload: posts });
     } catch (error) {
-      //   dispatch({ type: AUTH_ERROR });
+      alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 
@@ -50,7 +50,7 @@ const PostsState = (props) => {
 
       dispatch({ type: GET_ALL_COMMENTS, payload: comments });
     } catch (error) {
-      //   dispatch({ type: AUTH_ERROR });
+      alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 
@@ -73,15 +73,13 @@ const PostsState = (props) => {
       getAllPosts();
       hideModal();
     } catch (error) {
-      //   dispatch({ type: AUTH_ERROR });
       alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 
-  // Add post
+  // Update post
 
   const updatePost = async (postTitle, postText, userID, postID) => {
-    console.log(postText, postTitle, userID, postID);
     const config = {
       headers: {
         "Content-type": "application/json",
@@ -100,18 +98,6 @@ const PostsState = (props) => {
     } catch (error) {
       alert(`${error.response.status} ${error.response.data.msg}`);
     }
-  };
-
-  // Set current post
-
-  const setCurrentPost = (post) => {
-    dispatch({ type: SET_CURRENT_POST, payload: post });
-  };
-
-  // Clear current post
-
-  const clearCurrentPost = () => {
-    dispatch({ type: CLEAR_CURRENT_POST });
   };
 
   // Delete post
@@ -134,6 +120,18 @@ const PostsState = (props) => {
     } catch (error) {
       alert(`${error.response.status} ${error.response.data.msg}`);
     }
+  };
+
+  // Set current post
+
+  const setCurrentPost = (post) => {
+    dispatch({ type: SET_CURRENT_POST, payload: post });
+  };
+
+  // Clear current post
+
+  const clearCurrentPost = () => {
+    dispatch({ type: CLEAR_CURRENT_POST });
   };
 
   //Add comment
@@ -161,18 +159,16 @@ const PostsState = (props) => {
   // Get all comments
 
   const getAllPermissions = async (ownerID) => {
-    console.log(ownerID);
     try {
       const res = await axios.get("/api/permissions", {
         params: {
           ownerID,
         },
       });
-      // const permissions = await res.data;
 
       dispatch({ type: SET_USERS_PERMISSIONS, payload: res.data });
     } catch (error) {
-      //   dispatch({ type: AUTH_ERROR });
+      alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 
@@ -190,14 +186,16 @@ const PostsState = (props) => {
         { userID, permissionsUserID },
         config
       );
+
+      getAllPermissions(userID);
     } catch (error) {
-      //   dispatch({ type: AUTH_ERROR });
+      alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 
   // Delete permission
 
-  const deletePermission = async (permissionsUserID) => {
+  const deletePermission = async (userID, permissionsUserID) => {
     const config = {
       headers: {
         "Content-type": "application/json",
@@ -209,8 +207,10 @@ const PostsState = (props) => {
         `/api/permissions/${permissionsUserID}`,
         config
       );
+
+      getAllPermissions(userID);
     } catch (error) {
-      //   dispatch({ type: AUTH_ERROR });
+      alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 
@@ -238,6 +238,20 @@ const PostsState = (props) => {
     dispatch({ type: HIDE_PERMISSIONS_MODAL });
   };
 
+  const hideUser = async (userID) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.post("/api/hideUser", { userID }, config);
+    } catch (error) {
+      alert(`${error.response.status} ${error.response.data.msg}`);
+    }
+  };
+
   return (
     <PostsContext.Provider
       value={{
@@ -262,6 +276,7 @@ const PostsState = (props) => {
         addPermission,
         deletePermission,
         clearCurrentPost,
+        hideUser,
       }}
     >
       {props.children}

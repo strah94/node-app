@@ -385,70 +385,12 @@ table th {
   margin-right: 0.6rem;
 }
 
-/* Animation (Add After) */
 .item-enter {
   opacity: 0;
 }
 .item-enter-active {
   opacity: 1;
   transition: opacity 1000ms ease-in;
-}
-.item-exit {
-  opacity: 1;
-}
-.item-exit-active {
-  opacity: 0;
-  transition: opacity 1000ms ease-in;
-}
-
-/* Mobile Styles */
-@media (max-width: 700px) {
-  .hide-sm {
-    display: none;
-  }
-
-  .grid-2,
-  .grid-3,
-  .grid-4 {
-    grid-template-columns: 1fr;
-  }
-
-  /* Text Styles */
-  .x-large {
-    font-size: 3rem;
-  }
-
-  .large {
-    font-size: 2rem;
-  }
-
-  .lead {
-    font-size: 1rem;
-  }
-
-  /* Navbar */
-  .navbar {
-    display: block;
-    text-align: center;
-  }
-
-  .navbar h1 {
-    margin-bottom: 0.6rem;
-  }
-
-  .navbar ul {
-    text-align: center;
-    justify-content: center;
-  }
-}
-
-/* ANIMATION */
-.item-enter {
-  opacity: 0;
-}
-.item-enter-active {
-  opacity: 1;
-  transition: opacity 1900ms ease-in;
 }
 .item-exit {
   opacity: 1;
@@ -537,6 +479,13 @@ table th {
   color: white;
   position: relative;
   width: 500px;
+}
+
+.autor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  font-size: x-small;
 }
 
 .delete-post {

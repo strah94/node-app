@@ -16,7 +16,7 @@ const Posts = () => {
   return (
     <Fragment>
       {posts &&
-        posts.map((element) => <Post post={element} key={element.id} />)}
+        posts.map((element, index) => <Post post={element} key={index} />)}
     </Fragment>
   );
 };

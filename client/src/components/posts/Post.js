@@ -51,7 +51,7 @@ const Post = ({ post }) => {
   };
 
   return (
-    <div>
+    <div style={{ marginBottom: "10px" }}>
       <div className="post">
         <button onClick={onDelete} className="delete-post">
           X
@@ -65,8 +65,8 @@ const Post = ({ post }) => {
       <div className="comments">
         <button onClick={onComment}>COMMENT</button>
 
-        {postComments.map((comment) => (
-          <p key={comment.id}>{comment.comment_text}</p>
+        {postComments.map((comment, index) => (
+          <p key={index}>{`${comment.first_name}: ${comment.comment_text}`}</p>
         ))}
         {showCommentsInput && (
           <form onSubmit={onSubmit}>

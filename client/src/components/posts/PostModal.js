@@ -52,8 +52,6 @@ const PostModal = () => {
   };
 
   const checkEditHistory = async () => {
-    console.log("check edit history");
-    console.log(currentPost);
     const config = {
       headers: {
         "Content-type": "application/json",
@@ -67,7 +65,6 @@ const PostModal = () => {
     if (res.data.length !== 0) {
       setEditHistory(res.data);
     }
-    console.log(res.data);
   };
 
   const handleCloseModal = (e) => {
@@ -120,7 +117,7 @@ const PostModal = () => {
             <div className="edit-history">
               {editHistory &&
                 editHistory.map((edit) => (
-                  <div style={{ border: "2px solid red" }}>
+                  <div key={edit.id}>
                     <p>EDITED BY: {`${edit.first_name} ${edit.last_name}`}</p>
                     <p>TIME:{edit.time} </p>
                   </div>

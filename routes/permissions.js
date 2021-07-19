@@ -7,6 +7,7 @@ const {
   getAllPermissions,
   addPermission,
   deletePermission,
+  findPermission,
 } = require("../sql/Permissions");
 
 router.get("/", async (req, res) => {
@@ -26,6 +27,12 @@ router.post("/", async (req, res) => {
   const { userID, permissionsUserID } = req.body;
 
   try {
+    let existsAlready = await findPermission(userID, permissionsUserID);
+
+    if (existsAlready.length !== 0) {
+      return res.status(400).json({ msg: "User already has permission" });
+    }
+
     await addPermission(userID, permissionsUserID);
 
     res.json({ msg: "Permission added" });

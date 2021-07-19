@@ -88,10 +88,27 @@ const resetPassword = (password, id) => {
   });
 };
 
+const hideUser = (userID) => {
+  return new Promise((resolve, reject) => {
+    poolMYSQL.getConnection((err, conn) => {
+      let sql = "UPDATE `users` SET `hidden` = 1  WHERE  `id`=?";
+      let query = conn.query(sql, [userID], (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        conn.release();
+        resolve(result);
+        // console.log(result);
+      });
+    });
+  });
+};
+
 module.exports = {
   getUserByEmail,
   addUser,
   getUserById,
   resetPassword,
   getAllUsers,
+  hideUser,
 };
