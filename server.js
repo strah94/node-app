@@ -27,5 +27,7 @@ app.use("/api/mail", require("./routes/mail"));
 app.use("/api/posts", require("./routes/posts"));
 app.use("/api/comments", require("./routes/comments"));
 app.use("/api/resetPassword", require("./routes/resetPassword"));
+app.use("/api/permissions", require("./routes/permissions"));
+app.use("/api/editHistory", require("./routes/editHistory"));
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));

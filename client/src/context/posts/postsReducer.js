@@ -5,6 +5,9 @@ import {
   HIDE_MODAL,
   SET_CURRENT_POST,
   CLEAR_CURRENT_POST,
+  SHOW_PERMISSIONS_MODAL,
+  HIDE_PERMISSIONS_MODAL,
+  SET_USERS_PERMISSIONS,
 } from "../types";
 
 export default (state, action) => {
@@ -37,7 +40,22 @@ export default (state, action) => {
     case CLEAR_CURRENT_POST:
       return {
         ...state,
-        currentPost: {},
+        currentPost: null,
+      };
+    case SHOW_PERMISSIONS_MODAL:
+      return {
+        ...state,
+        permissionsModal: true,
+      };
+    case HIDE_PERMISSIONS_MODAL:
+      return {
+        ...state,
+        permissionsModal: false,
+      };
+    case SET_USERS_PERMISSIONS:
+      return {
+        ...state,
+        usersPermissions: action.payload,
       };
     default:
       return state;

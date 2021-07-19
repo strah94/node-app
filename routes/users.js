@@ -4,7 +4,17 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
-const { getUserByEmail, addUser } = require("../sql/Users");
+const { getUserByEmail, addUser, getAllUsers } = require("../sql/Users");
+
+router.get("/", async (req, res) => {
+  try {
+    const users = await getAllUsers();
+    res.json(users);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
 
 router.post(
   "/",

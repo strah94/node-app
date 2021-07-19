@@ -3,11 +3,13 @@ import AuthContext from "../../context/auth/authContext";
 import Posts from "../posts/Posts";
 import PostModal from "../posts/PostModal";
 import PostsContext from "../../context/posts/postsContext";
+import PermissionsModal from "../permissions/PermissionsModal";
+
 const Home = () => {
   const authContext = useContext(AuthContext);
   const postsContext = useContext(PostsContext);
 
-  const { showModal } = postsContext;
+  const { showModal, showPermissionsModal } = postsContext;
 
   useEffect(async () => {
     authContext.loadUser();
@@ -18,8 +20,12 @@ const Home = () => {
       <button className="add-btn" onClick={showModal}>
         ADD POST
       </button>
+      <button className="permissions-btn" onClick={showPermissionsModal}>
+        PERMISSIONS
+      </button>
       <Posts />
       <PostModal />
+      <PermissionsModal />
     </div>
   );
 };

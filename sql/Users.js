@@ -1,5 +1,21 @@
 const poolMYSQL = require("../config/db");
 
+const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    poolMYSQL.getConnection((err, conn) => {
+      let sql = "SELECT * FROM `users`";
+      let query = conn.query(sql, (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        conn.release();
+        resolve(result);
+        // console.log(result);
+      });
+    });
+  });
+};
+
 const getUserByEmail = (email) => {
   return new Promise((resolve, reject) => {
     poolMYSQL.getConnection((err, conn) => {
@@ -71,4 +87,10 @@ const resetPassword = (password, id) => {
   });
 };
 
-module.exports = { getUserByEmail, addUser, getUserById, resetPassword };
+module.exports = {
+  getUserByEmail,
+  addUser,
+  getUserById,
+  resetPassword,
+  getAllUsers,
+};

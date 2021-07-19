@@ -11,14 +11,19 @@ import {
   SET_CURRENT_POST,
   SHOW_MODAL,
   CLEAR_CURRENT_POST,
+  SHOW_PERMISSIONS_MODAL,
+  HIDE_PERMISSIONS_MODAL,
+  SET_USERS_PERMISSIONS,
 } from "../types";
 
 const PostsState = (props) => {
   const initialState = {
     posts: [],
-    currentPost: {},
+    currentPost: null,
     comments: [],
     modal: false,
+    permissionsModal: false,
+    usersPermissions: [],
   };
 
   const [state, dispatch] = useReducer(postsReducer, initialState);
@@ -153,16 +158,84 @@ const PostsState = (props) => {
     }
   };
 
+  // Get all comments
+
+  const getAllPermissions = async (ownerID) => {
+    console.log(ownerID);
+    try {
+      const res = await axios.get("/api/permissions", {
+        params: {
+          ownerID,
+        },
+      });
+      // const permissions = await res.data;
+
+      dispatch({ type: SET_USERS_PERMISSIONS, payload: res.data });
+    } catch (error) {
+      //   dispatch({ type: AUTH_ERROR });
+    }
+  };
+
+  // add permission
+
+  const addPermission = async (userID, permissionsUserID) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    try {
+      const res = await axios.post(
+        "/api/permissions",
+        { userID, permissionsUserID },
+        config
+      );
+    } catch (error) {
+      //   dispatch({ type: AUTH_ERROR });
+    }
+  };
+
+  // Delete permission
+
+  const deletePermission = async (permissionsUserID) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.delete(
+        `/api/permissions/${permissionsUserID}`,
+        config
+      );
+    } catch (error) {
+      //   dispatch({ type: AUTH_ERROR });
+    }
+  };
+
   // Show modal
 
   const showModal = () => {
     dispatch({ type: SHOW_MODAL });
   };
 
-  // Show modal
+  // Hide modal
 
   const hideModal = () => {
     dispatch({ type: HIDE_MODAL });
+  };
+
+  // Show modal
+
+  const showPermissionsModal = () => {
+    dispatch({ type: SHOW_PERMISSIONS_MODAL });
+  };
+
+  // Hide modal
+
+  const hidePermissionsModal = () => {
+    dispatch({ type: HIDE_PERMISSIONS_MODAL });
   };
 
   return (
@@ -172,6 +245,8 @@ const PostsState = (props) => {
         comments: state.comments,
         modal: state.modal,
         currentPost: state.currentPost,
+        permissionsModal: state.permissionsModal,
+        usersPermissions: state.usersPermissions,
         getAllPosts,
         getAllComments,
         addPost,
@@ -181,6 +256,12 @@ const PostsState = (props) => {
         showModal,
         addComment,
         updatePost,
+        showPermissionsModal,
+        hidePermissionsModal,
+        getAllPermissions,
+        addPermission,
+        deletePermission,
+        clearCurrentPost,
       }}
     >
       {props.children}

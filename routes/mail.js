@@ -17,7 +17,7 @@ router.post(
     }
 
     const { email } = req.body;
-    console.log(email);
+
     try {
       //Check if email exist
       let existingUser = await getUserByEmail(email);
@@ -52,6 +52,7 @@ router.post(
         html: contentHTML,
       });
 
+      res.json({ msg: "Mail has been sent" });
       console.log("Message sent: %s", info.messageId);
     } catch (err) {
       console.error(err.message);

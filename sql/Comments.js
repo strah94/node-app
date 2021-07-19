@@ -10,7 +10,7 @@ const getAllComments = () => {
         }
         conn.release();
         resolve(result);
-        console.log(result);
+        // console.log(result);
       });
     });
   });

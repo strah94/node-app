@@ -476,3 +476,37 @@ table th {
   border: 4px solid var(--primary-color);
   border-radius: 5px;
 }
+
+.edit-history {
+  width: 100%;
+  height: 100px;
+  margin-top: 10px;
+  border-radius: 5px;
+  color: white;
+  background-color: var(--primary-color);
+  overflow: auto;
+}
+
+.edit-history-btn {
+  background-color: red;
+  color: white;
+  border-radius: 5px;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.close-modal {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+}
+
+.close-modal:hover {
+  cursor: pointer;
+}

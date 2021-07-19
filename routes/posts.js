@@ -2,15 +2,17 @@ const express = require("express");
 const router = express.Router();
 const config = require("config");
 const { check, validationResult } = require("express-validator");
+const auth = require("../middleware/auth");
 const {
   getAllPosts,
   addPost,
   getPostById,
   deletePost,
   updatePost,
+  saveToEditHistory,
 } = require("../sql/Posts");
 
-const auth = require("../middleware/auth");
+const { getAllPermissions } = require("../sql/Permissions");
 const { deleteComments } = require("../sql/Comments");
 
 router.get("/", async (req, res) => {
@@ -53,12 +55,18 @@ router.put("/:id", auth, async (req, res) => {
   try {
     let post = await getPostById(req.params.id);
 
-    // Make sure user owns post
-    if (post[0].owner_id !== req.user.id) {
+    let permissions = await getAllPermissions(post[0].owner_id);
+
+    let havePermission = permissions.filter((permissionsUser) => {
+      return permissionsUser.write_user_id === req.user.id;
+    });
+
+    if (havePermission.length === 0 && post[0].owner_id !== req.user.id) {
       return res.status(401).json({ msg: "Not authorized" });
     }
 
     await updatePost(postTitle, postText, req.params.id);
+    await saveToEditHistory(post[0].id, req.user.id);
 
     res.json({ msg: "Post updated" });
   } catch (err) {

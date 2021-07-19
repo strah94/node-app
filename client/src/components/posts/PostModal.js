@@ -1,6 +1,7 @@
 import React, { useState, useContext, Fragment, useEffect } from "react";
 import AuthContext from "../../context/auth/authContext";
 import PostsContext from "../../context/posts/postsContext";
+import axios from "axios";
 
 const PostModal = () => {
   const authContext = useContext(AuthContext);
@@ -8,16 +9,26 @@ const PostModal = () => {
 
   const [title, setTitle] = useState("");
   const [postText, setPostText] = useState("");
+  const [editHistory, setEditHistory] = useState([]);
+  const [showEditHistory, setShowEditHistory] = useState(false);
 
   const { user } = authContext;
-  const { addPost, modal, currentPost, updatePost } = postsContext;
+  const {
+    addPost,
+    modal,
+    currentPost,
+    updatePost,
+    hideModal,
+    clearCurrentPost,
+  } = postsContext;
 
   useEffect(() => {
     if (currentPost) {
       setTitle(currentPost.post_title);
       setPostText(currentPost.post_text);
+      checkEditHistory();
     }
-  }, [modal]);
+  }, [currentPost]);
 
   const onChange = (e) => {
     e.target.name === "title"
@@ -36,14 +47,51 @@ const PostModal = () => {
     setPostText("");
   };
 
+  const onClick = (e) => {
+    showEditHistory ? setShowEditHistory(false) : setShowEditHistory(true);
+  };
+
+  const checkEditHistory = async () => {
+    console.log("check edit history");
+    console.log(currentPost);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+    const res = await axios.post(
+      "/api/editHistory",
+      { postID: currentPost.id },
+      config
+    );
+    if (res.data.length !== 0) {
+      setEditHistory(res.data);
+    }
+    console.log(res.data);
+  };
+
+  const handleCloseModal = (e) => {
+    hideModal();
+    currentPost && clearCurrentPost();
+    setTitle("");
+    setPostText("");
+    setShowEditHistory(false);
+  };
+
   return (
     <Fragment>
       {modal && (
         <div className="modal">
+          {currentPost && (
+            <button className="edit-history-btn" onClick={onClick}>
+              edit history
+            </button>
+          )}
           <form onSubmit={onSubmit} onSubmit={onSubmit}>
             <h2 className="text-primary">
               {currentPost ? "EDIT POST" : "ADD POST"}
             </h2>
+
             <input
               type="text"
               placeholder="Title"
@@ -63,7 +111,22 @@ const PostModal = () => {
               value={currentPost ? "Update post" : "Add post"}
               className="btn btn-primary btn-block"
             />
+            <button className="close-modal" onClick={handleCloseModal}>
+              X
+            </button>
           </form>
+
+          {showEditHistory && (
+            <div className="edit-history">
+              {editHistory &&
+                editHistory.map((edit) => (
+                  <div style={{ border: "2px solid red" }}>
+                    <p>EDITED BY: {`${edit.first_name} ${edit.last_name}`}</p>
+                    <p>TIME:{edit.time} </p>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       )}
     </Fragment>
