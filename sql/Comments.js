@@ -33,4 +33,20 @@ const addComment = (text, postID, userID) => {
   });
 };
 
-module.exports = { getAllComments, addComment };
+const deleteComments = (postID) => {
+  return new Promise((resolve, reject) => {
+    poolMYSQL.getConnection((err, conn) => {
+      let sql = "DELETE FROM `comments` WHERE `post_id`= ? ";
+      let query = conn.query(sql, [postID], (err, result) => {
+        if (err) {
+          reject(err);
+        }
+        conn.release();
+        resolve((result = "ok"));
+        // console.log(result);
+      });
+    });
+  });
+};
+
+module.exports = { getAllComments, addComment, deleteComments };

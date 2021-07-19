@@ -8,12 +8,15 @@ import {
   GET_ALL_COMMENTS,
   GET_ALL_POSTS,
   HIDE_MODAL,
+  SET_CURRENT_POST,
   SHOW_MODAL,
+  CLEAR_CURRENT_POST,
 } from "../types";
 
 const PostsState = (props) => {
   const initialState = {
     posts: [],
+    currentPost: {},
     comments: [],
     modal: false,
   };
@@ -62,9 +65,67 @@ const PostsState = (props) => {
         config
       );
 
-      alert(res.data.msg);
       getAllPosts();
       hideModal();
+    } catch (error) {
+      //   dispatch({ type: AUTH_ERROR });
+      alert(`${error.response.status} ${error.response.data.msg}`);
+    }
+  };
+
+  // Add post
+
+  const updatePost = async (postTitle, postText, userID, postID) => {
+    console.log(postText, postTitle, userID, postID);
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.put(
+        `/api/posts/${postID}`,
+        { postTitle, postText, userID },
+        config
+      );
+      getAllPosts();
+      hideModal();
+      clearCurrentPost();
+    } catch (error) {
+      alert(`${error.response.status} ${error.response.data.msg}`);
+    }
+  };
+
+  // Set current post
+
+  const setCurrentPost = (post) => {
+    dispatch({ type: SET_CURRENT_POST, payload: post });
+  };
+
+  // Clear current post
+
+  const clearCurrentPost = () => {
+    dispatch({ type: CLEAR_CURRENT_POST });
+  };
+
+  // Delete post
+
+  const deletePost = async (postID, userID) => {
+    const config = {
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    try {
+      const res = await axios.delete(
+        `/api/posts/${postID}`,
+        { postID, userID },
+        config
+      );
+
+      getAllPosts();
     } catch (error) {
       //   dispatch({ type: AUTH_ERROR });
     }
@@ -110,12 +171,16 @@ const PostsState = (props) => {
         posts: state.posts,
         comments: state.comments,
         modal: state.modal,
+        currentPost: state.currentPost,
         getAllPosts,
         getAllComments,
         addPost,
+        deletePost,
+        setCurrentPost,
         hideModal,
         showModal,
         addComment,
+        updatePost,
       }}
     >
       {props.children}

@@ -3,6 +3,8 @@ import {
   GET_ALL_COMMENTS,
   SHOW_MODAL,
   HIDE_MODAL,
+  SET_CURRENT_POST,
+  CLEAR_CURRENT_POST,
 } from "../types";
 
 export default (state, action) => {
@@ -26,6 +28,16 @@ export default (state, action) => {
       return {
         ...state,
         modal: false,
+      };
+    case SET_CURRENT_POST:
+      return {
+        ...state,
+        currentPost: action.payload,
+      };
+    case CLEAR_CURRENT_POST:
+      return {
+        ...state,
+        currentPost: {},
       };
     default:
       return state;

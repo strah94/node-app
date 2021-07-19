@@ -13,10 +13,6 @@ const Posts = () => {
     getAllComments();
   }, []);
 
-  useEffect(() => {
-    console.log(posts);
-  }, [posts]);
-
   return (
     <Fragment>
       {posts &&

@@ -6,7 +6,8 @@ const Post = ({ post }) => {
   const authContext = useContext(AuthContext);
   const postsContext = useContext(PostsContext);
 
-  const { comments, addComment } = postsContext;
+  const { comments, addComment, deletePost, setCurrentPost, showModal } =
+    postsContext;
   const { user } = authContext;
 
   const [postComments, setPostComments] = useState([]);
@@ -35,18 +36,29 @@ const Post = ({ post }) => {
     setComment("");
   };
 
-  const onClick = (e) => {
+  const onComment = (e) => {
     setShowCommentsInput(true);
+  };
+  const onEdit = (e) => {
+    setCurrentPost(post);
+    showModal();
+  };
+
+  const onDelete = () => {
+    deletePost(post.id, user.id);
   };
 
   return (
     <div>
       <div className="post">
+        <button onClick={onDelete}>X</button>
         <h1 style={{ color: "green" }}>{post.post_title}</h1>
         <p>{post.post_text}</p>
       </div>
       <div className="comments">
-        <button onClick={onClick}>COMMENT</button>
+        <button onClick={onComment}>COMMENT</button>
+        <button onClick={onEdit}>EDIT</button>
+
         {postComments.map((comment) => (
           <p key={comment.id}>{comment.comment_text}</p>
         ))}

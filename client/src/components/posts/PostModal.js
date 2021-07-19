@@ -1,4 +1,4 @@
-import React, { useState, useContext, Fragment } from "react";
+import React, { useState, useContext, Fragment, useEffect } from "react";
 import AuthContext from "../../context/auth/authContext";
 import PostsContext from "../../context/posts/postsContext";
 
@@ -10,7 +10,14 @@ const PostModal = () => {
   const [postText, setPostText] = useState("");
 
   const { user } = authContext;
-  const { addPost, modal } = postsContext;
+  const { addPost, modal, currentPost, updatePost } = postsContext;
+
+  useEffect(() => {
+    if (currentPost) {
+      setTitle(currentPost.post_title);
+      setPostText(currentPost.post_text);
+    }
+  }, [modal]);
 
   const onChange = (e) => {
     e.target.name === "title"
@@ -20,7 +27,13 @@ const PostModal = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addPost(title, postText, user.id);
+
+    currentPost
+      ? updatePost(title, postText, user.id, currentPost.id)
+      : addPost(title, postText, user.id);
+
+    setTitle("");
+    setPostText("");
   };
 
   return (
@@ -29,11 +42,8 @@ const PostModal = () => {
         <div className="modal">
           <form onSubmit={onSubmit} onSubmit={onSubmit}>
             <h2 className="text-primary">
-              {/* {current ? "Edit Contact" : "Add contact"}{" "} */}
-              Add new post
+              {currentPost ? "EDIT POST" : "ADD POST"}
             </h2>
-
-            {/* <h3>TITLE</h3> */}
             <input
               type="text"
               placeholder="Title"
@@ -41,7 +51,6 @@ const PostModal = () => {
               value={title}
               onChange={onChange}
             />
-
             <input
               type="text"
               name="postText"
@@ -51,7 +60,7 @@ const PostModal = () => {
             />
             <input
               type="submit"
-              value="Add post"
+              value={currentPost ? "Update post" : "Add post"}
               className="btn btn-primary btn-block"
             />
           </form>
