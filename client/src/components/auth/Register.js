@@ -1,9 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../../context/auth/authContext";
 
-const Register = () => {
+const Register = (props) => {
   const authContext = useContext(AuthContext);
   const { register, error, clearErrors, isAuthenticated } = authContext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push("/");
+    }
+
+    if (error === "User already exists") {
+      alert(error);
+      clearErrors();
+    }
+    //eslint-disable-next-line
+  }, [error, isAuthenticated, props.history]);
 
   const onChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });

@@ -41,6 +41,7 @@ router.post(
 
     try {
       await addPost(title, postText, userID);
+
       res.json({ msg: "Post added" });
     } catch (err) {
       console.error(err.message);
@@ -54,7 +55,6 @@ router.put("/:id", auth, async (req, res) => {
 
   try {
     let post = await getPostById(req.params.id);
-
     let permissions = await getAllPermissions(post[0].owner_id);
 
     let havePermission = permissions.filter((permissionsUser) => {

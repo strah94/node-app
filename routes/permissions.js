@@ -14,6 +14,7 @@ router.get("/", async (req, res) => {
 
   try {
     const permissions = await getAllPermissions(ownerID);
+
     res.json(permissions);
   } catch (err) {
     console.error(err.message);
@@ -26,7 +27,8 @@ router.post("/", async (req, res) => {
 
   try {
     await addPermission(userID, permissionsUserID);
-    // res.json({ msg: "Post added" });
+
+    res.json({ msg: "Permission added" });
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

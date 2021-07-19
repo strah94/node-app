@@ -16,7 +16,15 @@ const Home = () => {
     //eslint-disable-next-line
   }, []);
   return (
-    <div className="homeContainer">
+    <div
+      className="homeContainer"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <button className="add-btn" onClick={showModal}>
         ADD POST
       </button>

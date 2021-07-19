@@ -8,6 +8,7 @@ const PermissionsModal = () => {
   const postsContext = useContext(PostsContext);
 
   const [allUsers, setAllUsers] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const { user } = authContext;
   const {
@@ -22,6 +23,7 @@ const PermissionsModal = () => {
   useEffect(async () => {
     if (user) {
       getAllPermissions(user.id);
+      user.role == "admin" && setIsAdmin(true);
 
       const res = await axios.get("/api/users", {});
       const users = await res.data;
@@ -38,6 +40,10 @@ const PermissionsModal = () => {
     getAllPermissions(user.id);
   };
 
+  const handleOnHide = (e) => {
+    console.log("handle on hide");
+  };
+
   const handleOnClick = (e) => {
     deletePermission(e.target.value);
     getAllPermissions(user.id);
@@ -47,13 +53,19 @@ const PermissionsModal = () => {
     <Fragment>
       {permissionsModal && (
         <div className="modal">
-          <button onClick={hidePermissionsModal}>X</button>
-
+          <button className="delete-post" onClick={hidePermissionsModal}>
+            X
+          </button>
+          <p>Users that can edit your posts:</p>
           {usersPermissions &&
             usersPermissions.map((user, index) => (
               <div style={{ display: "flex" }} key={index}>
                 <p>{user.first_name}</p>
-                <button value={user.id} onClick={handleOnClick}>
+                <button
+                  className="remove-permission"
+                  value={user.id}
+                  onClick={handleOnClick}
+                >
                   X
                 </button>
               </div>
@@ -71,6 +83,28 @@ const PermissionsModal = () => {
               );
             })}
           </select>
+
+          {isAdmin && (
+            <div>
+              <p>Hidden users:</p>
+              <select
+                onChange={handleOnHide}
+                className="select"
+                defaultValue=""
+              >
+                <option value="" disabled>
+                  Hide users
+                </option>
+                {allUsers.map((user, index) => {
+                  return (
+                    <option value={user.id} key={index}>
+                      {user.first_name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+          )}
         </div>
       )}
     </Fragment>

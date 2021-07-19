@@ -132,7 +132,7 @@ const PostsState = (props) => {
 
       getAllPosts();
     } catch (error) {
-      //   dispatch({ type: AUTH_ERROR });
+      alert(`${error.response.status} ${error.response.data.msg}`);
     }
   };
 

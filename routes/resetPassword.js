@@ -25,13 +25,11 @@ router.post(
     const salt = await bcrypt.genSalt(10);
     let hashedPassword = await bcrypt.hash(password, salt);
 
-    //Update password
-    await resetPassword(hashedPassword, id);
-
-    res.json({ msg: "Password updated successfuly" });
-    // console.log(password, id);
-    // console.log();
     try {
+      //Update password
+      await resetPassword(hashedPassword, id);
+
+      res.json({ msg: "Password updated successfuly" });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");

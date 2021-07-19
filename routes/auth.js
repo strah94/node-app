@@ -10,6 +10,7 @@ const { getUserByEmail, addUser, getUserById } = require("../sql/Users");
 router.get("/", auth, async (req, res) => {
   try {
     const user = await getUserById(req.user.id);
+
     res.json(user[0]);
   } catch (err) {
     console.error(err.message);

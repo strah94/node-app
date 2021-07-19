@@ -37,7 +37,9 @@ const Post = ({ post }) => {
   };
 
   const onComment = (e) => {
-    setShowCommentsInput(true);
+    showCommentsInput
+      ? setShowCommentsInput(false)
+      : setShowCommentsInput(true);
   };
   const onEdit = (e) => {
     setCurrentPost(post);
@@ -51,13 +53,17 @@ const Post = ({ post }) => {
   return (
     <div>
       <div className="post">
-        <button onClick={onDelete}>X</button>
-        <h1 style={{ color: "green" }}>{post.post_title}</h1>
+        <button onClick={onDelete} className="delete-post">
+          X
+        </button>
+        <button className="edit-post" onClick={onEdit}>
+          EDIT
+        </button>
+        <h1>{post.post_title}</h1>
         <p>{post.post_text}</p>
       </div>
       <div className="comments">
         <button onClick={onComment}>COMMENT</button>
-        <button onClick={onEdit}>EDIT</button>
 
         {postComments.map((comment) => (
           <p key={comment.id}>{comment.comment_text}</p>
@@ -70,7 +76,11 @@ const Post = ({ post }) => {
               value={comment}
               onChange={onChange}
             ></input>
-            <input type="submit" value="addComment"></input>
+            <input
+              type="submit"
+              value="addComment"
+              className="add-comment"
+            ></input>
           </form>
         )}
       </div>

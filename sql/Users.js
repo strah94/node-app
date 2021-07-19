@@ -39,6 +39,7 @@ const addUser = (firstName, lastName, email, password) => {
     email: email,
     password: password,
     role: "basic",
+    hidden: 0,
   };
   return new Promise((resolve, reject) => {
     poolMYSQL.getConnection((err, conn) => {
